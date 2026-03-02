@@ -1,0 +1,93 @@
+/* style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500&display=swap');
+
+/* General body styling */
+body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 40px auto;
+    max-width: 900px;
+    background-image: url('../Assets/Images/ParchmentBackground.jpg');
+        /* path to your image */
+        background-size: cover;
+        /* fill the page */
+        background-repeat: no-repeat;
+        /* don’t tile */
+        background-attachment: fixed;
+        /* keeps it stationary while scrolling */
+        background-position: center;
+        /* center the image */
+        color: #3b2f2f;
+        /* dark brown text for readability */
+}
+
+/* Headings */
+h1 {
+    font-size: 4em;
+    font-family: 'Great Vibes', cursive;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 15px;
+}
+
+/* Blockquote for internal thoughts or quotes */
+blockquote {
+    margin: 20px 40px;
+    font-style: italic;
+    color: #555;
+    border-left: 4px solid #ccc;
+    padding-left: 15px;
+    background-color: #f2f2f2;
+}
+
+/* Navigation button */
+.next-chapter {
+    display: block;
+    width: max-content;
+    margin: 40px auto;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #4a4ae5;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.next-chapter:hover {
+    background-color: #3a3abf;
+}
+
+/* Optional: code or special text */
+code {
+    background-color: #eee;
+    padding: 2px 4px;
+    font-family: monospace;
+    border-radius: 3px;
+}
+
+/* Images (if added later) */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}

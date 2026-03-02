@@ -1,0 +1,123 @@
+/*
+Master Style Sheet
+This handles the base style of all pages.
+*/
+
+:root {
+    --bg-primary: #0f172a;          /* Deep dark blue */
+    --bg-secondary: #111827;        /* Slightly lighter panel */
+    --accent-purple: #4c1d95;       /* Deep purple */
+    --accent-hover: #6d28d9;        /* Hover state */
+    --text-primary: #f1f5f9;        /* Near white */
+    --text-secondary: #cbd5e1;      /* Silver */
+    --border-subtle: #334155;       /* Soft divider */
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+}
+
+header {
+    background-color: var(--accent-purple);
+    padding: 16px 20px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: var(--text-primary);
+    text-decoration: none;
+    margin-left: 16px;
+    padding: 8px 14px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-weight: 500;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+nav a:hover {
+    background-color: var(--accent-hover);
+}
+
+nav a.active {
+    background-color: var(--text-secondary);
+    color: var(--bg-primary);
+    border-color: var(--text-secondary);
+}
+
+footer {
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--border-subtle);
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+h1 {
+    font-size: 2.8rem;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    border-left: 4px solid var(--accent-purple);
+    padding-left: 12px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+h4 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 16px;
+    max-width: 70ch;
+}
+
+a {
+    color: var(--accent-purple);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--accent-hover);
+}
