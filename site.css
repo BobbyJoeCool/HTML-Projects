@@ -1,0 +1,62 @@
+/* Master CSS Styling Sheet */
+
+:root {
+    /* Backgrounds */
+    --bg-primary: #0f172a;
+    --bg-secondary: #111827;
+  
+    /* Primary Accent (Deep) */
+    --accent-purple: #4d1182;
+    --accent-hover: #6d368f;
+  
+    /* Lighter Accent Variants */
+    --accent-light: #8b5cf6;
+    --accent-soft: #a78bfa;
+    --accent-glow: #c4b5fd;
+  
+    /* Complementary Cool Accent */
+    --accent-blue: #3502b5;
+    --accent-blue-soft: #4202e3;
+  
+    /* Silver Accents */
+    --silver-accent: #b8b8b8;
+    --silver-dark-accent: #636363;
+  
+    /* Text */
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+  
+    /* Borders */
+    --border-subtle: #334155;
+    --border-accent: #8b5cf6;
+  }
+
+body {
+    background-color: var(--bg-primary);
+}
+
+#container {
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+h1,h2,h3,h4 {
+    color: var(--text-primary);
+    border: 1px var(--border-accent);
+    padding: 10px;
+}
+
+a {
+    color: var(--accent-soft);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-glow)
+}
+
+a:visited {
+    color: var(--silver-dark-accent)
+}
