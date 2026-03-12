@@ -49,19 +49,19 @@ main {
 }
 
 .suit-hearts {
-    background-image: url("Assets/heart.png");
+    background-image: url("assets/heart.png");
 }
 
 .suit-diamonds {
-    background-image: url("Assets/diamond.png");
+    background-image: url("assets/diamond.png");
 }
 
 .suit-clubs {
-    background-image: url("Assets/club.png");
+    background-image: url("assets/club.png");
 }
 
 .suit-spades {
-    background-image: url("Assets/spade.png");
+    background-image: url("assets/spade.png");
 }
 
 #deck {
