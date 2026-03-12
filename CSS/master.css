@@ -36,13 +36,23 @@ body {
     background-color: var(--bg-primary);
 }
 
-#container {
+header {
+    width: 90%;
+    background-color: var(--accent-purple);
+    text-align: center;
+    color: var(--text-muted);
+    padding: 20px;
+    border: 2px solid var(--border-subtle);
+    border-radius: 20px;
+}
+
+main {
     margin-top: 50px;
     margin-left: 100px;
     margin-right: 100px;
 }
 
-h1,h2,h3,h4 {
+h2,h3,h4 {
     color: var(--text-primary);
     border: 1px var(--border-accent);
     padding: 10px;

@@ -58,7 +58,16 @@ blockquote {
 }
 
 /* Navigation button */
-.next-chapter {
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 80%;
+  margin-inline: auto;
+}
+
+.page-button {
   display: block;
   width: max-content;
   margin: 40px auto;
@@ -72,7 +81,7 @@ blockquote {
   transition: background-color 0.3s ease;
 }
 
-.next-chapter:hover {
+.page-button:hover {
   background-color: #3a3abf;
 }
 
@@ -90,4 +99,47 @@ img {
   height: auto;
   display: block;
   margin: 20px auto;
+}
+
+/* Table of Contents */
+
+#prologue-toc {
+  padding-left: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2em;
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+#prologue-toc a {
+  text-decoration: none;
+  color: #3b2f2f;
+  transition: color 0.2s ease;
+}
+#prologue-toc a:hover {
+  color: #4a4ae5;
+}
+
+ol {
+  list-style-position: inside;
+  padding-left: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2em;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+ol li {
+  margin: 10px 0;
+}
+
+/* TOC links */
+ol li a {
+  text-decoration: none;
+  color: #3b2f2f;
+  transition: color 0.2s ease;
+}
+
+ol li a:hover {
+  color: #4a4ae5;
 }
