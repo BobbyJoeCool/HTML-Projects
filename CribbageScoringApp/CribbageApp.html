@@ -4,9 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/master.css">
-    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="style.css">
     <title>Robert Breutzmann HTML-CSS-JavaScript Projects</title>
 </head>
+<body>
+<main>
 
+<div id="hand">
+    <div class="card-slot"></div>
+    <div class="card-slot"></div>
+    <div class="card-slot"></div>
+    <div class="card-slot"></div>
+</div>
+
+<div id="cut-card">
+    <div class="card-slot"></div>
+</div>
+
+<button type="button" id="reset-button" onClick="reset()">Reset</button>
+
+<hr>
+
+<div id="score">
+    <p id="show-score">Score:</p>
+</div>
+
+<button type="button" id="score-button" onClick="scoreHand()">Score</button>
+
+<hr>
+
+<div id="deck"></div>
+
+</main>
+</body>
+<script src="script.js"></script>
 </html>

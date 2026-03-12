@@ -1,0 +1,138 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #333;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0,0,0,.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 45%;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+#show-score {
+    font-size: 36pt;
+    margin: 0px;
+    gap: 1rem;
+}
+
+.card::before {
+    content: attr(data-rank);
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    font-weight: bold;
+}
+
+.card::after {
+    content: attr(data-rank);
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    transform: rotate(180deg);
+    font-weight: bold;
+}
+
+.suit-hearts {
+    background-image: url("assets/heart.png");
+}
+
+.suit-diamonds {
+    background-image: url("assets/diamond.png");
+}
+
+.suit-clubs {
+    background-image: url("assets/club.png");
+}
+
+.suit-spades {
+    background-image: url("assets/spade.png");
+}
+
+#deck {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.suit-row {
+    display: flex;
+    gap: 10px;
+}
+
+#hand {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.card-slot {
+    width: 80px;
+    height: 120px;
+    border: 2px dashed #888;
+    border-radius: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hand {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+#cut-card {
+    margin-top: 10px;
+}
+
+#deck .card {
+    width: 50px;
+    height: 70px;
+}
+
+#hand .card,
+#cut-card .card {
+    width: 80px;
+    height: 120px;
+    font-size: 24pt;
+}
+
+#reset-button {
+    background-color: darkred;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 1rem;
+}
+
+button:hover {
+    transform: translateY(-5px)
+}
+
+button:active {
+    transform: translateY(2px)
+}
+
+#score-button {
+    background-color: darkblue;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 1rem;
+}
