@@ -296,10 +296,6 @@ Design considerations:
 Possible future upgrades:
 
 - Drag-and-drop card selection
-- Full deck interface
-- Pegging phase simulator
-- Hand probability calculator
-- AI hand suggestions
 - Mobile optimized layout
 
 ---
