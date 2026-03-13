@@ -1,4 +1,8 @@
 
+/**
+ * Builds the deck of cards and renders it in the DOM.
+ * Creates a row for each suit and adds cards for each rank within that suit.
+ */
 function buildDeck() {
 
     const suits = ["hearts", "diamonds", "clubs", "spades"];
@@ -62,6 +66,10 @@ document.addEventListener("click", function(e) {
 
 });
 
+/**
+ * Resets the game state by clearing the deck, hand slots, cut card, and score.
+ * Rebuilds the deck after clearing.
+ */
 function reset() {
     const deck = document.getElementById("deck");
 
@@ -88,6 +96,11 @@ function reset() {
     buildDeck();
 }
 
+/**
+ * Calculates the total score for the current hand by summing all scoring categories.
+ * @param {Array} cards - Array of card objects with rank, suit, and value.
+ * @returns {number} The total score.
+ */
 function scoreHand() {
     let score = 0;
     const cards = getAllCards()
@@ -99,6 +112,12 @@ function scoreHand() {
     displayScore(score);
 }
 
+/**
+ * Scores combinations of cards that sum to 15.
+ * Each combination of cards that add up to 15 scores 2 points.
+ * @param {Array} cards - Array of card objects.
+ * @returns {number} The score for 15s.
+ */
 function score15s(cards) {
 
     const values = cards.map(card => card.value)
@@ -106,13 +125,13 @@ function score15s(cards) {
     let combinations = 0;
 
     // Nested For Loop using a Bitwise Function to iterate through all possible combinations of cards to look for 15s.
-    for (let mask = 1; mask < (1 << values.length); mask++) {
+    for (let mask = 1; mask < (1 << values.length); mask++) { // cycles through each combination
 
         let sum = 0;
 
-        for (let i = 0; i < values.length; i++) {
+        for (let i = 0; i < values.length; i++) { // cycles through each card
 
-            if (mask & (1 << i)) {
+            if (mask & (1 << i)) { // checks if the bit is active in this bit
                 sum += values[i];
             }
         }
@@ -125,6 +144,12 @@ function score15s(cards) {
 
 }
 
+/**
+ * Scores pairs in the hand.
+ * Two of a kind: 2 points, three of a kind: 6 points, four of a kind: 12 points.
+ * @param {Array} cards - Array of card objects.
+ * @returns {number} The score for pairs.
+ */
 function scorePairs(cards) {
 
     const rankCounts = {};
@@ -153,6 +178,13 @@ function scorePairs(cards) {
 
 }
 
+/**
+ * Scores runs (sequences) in the hand.
+ * A run of 3 cards: 3 points, 4 cards: 4 points, etc.
+ * Multipliers apply for duplicate ranks in the run.
+ * @param {Array} cards - Array of card objects.
+ * @returns {number} The score for runs.
+ */
 function scoreRuns(cards) {
 
     const values = cards.map(card => rankForRuns(card.rank));
@@ -195,6 +227,12 @@ function scoreRuns(cards) {
     return score;
 }
 
+/**
+ * Scores flushes in the hand.
+ * 4 cards of the same suit: 4 points, plus 1 if the cut card matches: 5 points total.
+ * @param {Array} cards - Array of card objects (first 4 are hand, last is cut).
+ * @returns {number} The score for flush.
+ */
 function scoreFlush(cards) {
     let score = 0;
     const suits = cards.map(card => card.suit)
@@ -210,6 +248,12 @@ function scoreFlush(cards) {
 
 }
 
+/**
+ * Scores knobs (right jack).
+ * 1 point if any jack in the hand matches the suit of the cut card.
+ * @param {Array} cards - Array of card objects (first 4 are hand, last is cut).
+ * @returns {number} The score for knobs (0 or 1).
+ */
 function scoreKnobs(cards) {
     for (let i = 0; i < 4; i++) {
         if (cards[i].rank === "J" && cards[i].suit === cards[4].suit) {
@@ -220,11 +264,21 @@ function scoreKnobs(cards) {
     return 0; // No knobs found.
 }
 
+/**
+ * Displays the calculated score in the UI.
+ * @param {number} score - The total score to display.
+ */
 function displayScore(score) {
     const scoreContainer = document.getElementById("show-score");
     scoreContainer.textContent = `Score: ${score}`;
 }
 
+/**
+ * Gets the numerical value of a card rank for scoring purposes.
+ * A=1, 2-10=face value, J/Q/K=10.
+ * @param {string} rank - The card rank (A,2-10,J,Q,K).
+ * @returns {number} The numerical value.
+ */
 function cardValue(rank) {
     if (rank === "A") return 1;
     if (["K", "Q", "J"].includes(rank)) return 10;
@@ -232,6 +286,10 @@ function cardValue(rank) {
     return parseInt(rank);
 }
 
+/**
+ * Retrieves all cards currently in the hand and cut card slots.
+ * @returns {Array} Array of card objects with rank, suit, and value.
+ */
 function getAllCards() {
     const cards = [];
 
@@ -256,6 +314,12 @@ function getAllCards() {
     return cards;
 }
 
+/**
+ * Converts card rank to numerical value for run detection.
+ * A=1, J=11, Q=12, K=13, others as is.
+ * @param {string} rank - The card rank.
+ * @returns {number} The numerical value for run calculation.
+ */
 function rankForRuns(rank) {
     if (rank === "A") return 1;
     if (rank === "J") return 11;

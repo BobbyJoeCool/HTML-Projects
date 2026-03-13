@@ -1,119 +1,109 @@
+/* CSS for Cribbage Scoring App */
+
 main {
+    /* positioning and layout */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
 
-.card {
-    background: white;
-    border-radius: 10px;
-    border: 1px solid #333;
-    position: relative;
-    box-shadow: 0 3px 6px rgba(0,0,0,.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 45%;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-}
-
-#show-score {
-    font-size: 36pt;
-    margin: 0px;
-    gap: 1rem;
-}
-
-.card::before {
-    content: attr(data-rank);
-    position: absolute;
-    top: 6px;
-    left: 8px;
-    font-weight: bold;
-}
-
-.card::after {
-    content: attr(data-rank);
-    position: absolute;
-    bottom: 6px;
-    right: 8px;
-    transform: rotate(180deg);
-    font-weight: bold;
-}
-
-.suit-hearts {
-    background-image: url("assets/heart.png");
-}
-
-.suit-diamonds {
-    background-image: url("assets/diamond.png");
-}
-
-.suit-clubs {
-    background-image: url("assets/club.png");
-}
-
-.suit-spades {
-    background-image: url("assets/spade.png");
-}
-
 #deck {
+    /* positioning and layout */
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .suit-row {
+    /* positioning and layout */
     display: flex;
     gap: 10px;
 }
 
 #hand {
+    /* positioning and layout */
     display: flex;
     gap: 12px;
     margin-bottom: 20px;
 }
 
 .card-slot {
+    /* positioning and layout */
     width: 80px;
     height: 120px;
-    border: 2px dashed #888;
-    border-radius: 10px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-}
 
-#hand {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
+    /* visual styling */
+    border: 2px dashed #888;
+    border-radius: 10px;
 }
 
 #cut-card {
+    /* positioning and layout */
     margin-top: 10px;
 }
 
 #deck .card {
+    /* positioning and layout */
     width: 50px;
     height: 70px;
 }
 
 #hand .card,
 #cut-card .card {
+    /* positioning and layout */
     width: 80px;
     height: 120px;
+
+    /* typography */
     font-size: 24pt;
 }
 
+.card {
+    /* positioning and layout */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* visual styling */
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 3px 6px rgba(0,0,0,.25);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 45%;
+
+    /* typography */
+    font-size: 12px;
+}
+
+.suit-hearts {
+    /* visual styling */
+    background-image: url("assets/heart.png");
+}
+
+.suit-diamonds {
+    /* visual styling */
+    background-image: url("assets/diamond.png");
+}
+
+.suit-clubs {
+    /* visual styling */
+    background-image: url("assets/club.png");
+}
+
+.suit-spades {
+    /* visual styling */
+    background-image: url("assets/spade.png");
+}
+
 #reset-button {
+    /* visual styling */
     background-color: darkred;
     color: white;
     border-radius: 20px;
@@ -121,18 +111,60 @@ main {
     gap: 1rem;
 }
 
-button:hover {
-    transform: translateY(-5px)
-}
-
-button:active {
-    transform: translateY(2px)
-}
-
 #score-button {
+    /* visual styling */
     background-color: darkblue;
     color: white;
     border-radius: 20px;
     padding: 10px;
     gap: 1rem;
+}
+
+#show-score {
+    /* typography */
+    font-size: 36pt;
+    margin: 0px;
+    gap: 1rem;
+}
+
+.card::before {
+    /* visual styling */
+    content: attr(data-rank);
+
+    /* positioning and layout */
+    position: absolute;
+    top: 6px;
+    left: 8px;
+
+    /* typography */
+    font-weight: bold;
+}
+
+.card::after {
+    /* visual styling */
+    content: attr(data-rank);
+
+    /* positioning and layout */
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    transform: rotate(180deg);
+
+    /* typography */
+    font-weight: bold;
+}
+
+.card:hover {
+    /* interactions and animations */
+    transform: translateY(-4px);
+}
+
+button:hover {
+    /* interactions and animations */
+    transform: translateY(-5px)
+}
+
+button:active {
+    /* interactions and animations */
+    transform: translateY(2px)
 }
