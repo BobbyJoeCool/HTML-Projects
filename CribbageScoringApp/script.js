@@ -1,5 +1,25 @@
 
 /**
+ * Represents a playing card used in cribbage scoring.
+ * @typedef {Object} Card
+ * @property {string} rank - Card rank ("A", "2"-"10", "J", "Q", "K").
+ * @property {string} suit - Card suit ("hearts", "diamonds", "clubs", "spades").
+ * @property {number} value - Numerical value used for 15 calculations.
+ */
+
+/**
+ * Represents the breakdown of cribbage scoring categories.
+ * @typedef {Object} Scoring
+ * @property {{label: string, points: number}} fifteens
+ * @property {{label: string, points: number}} pairs
+ * @property {{label: string, points: number}} runs
+ * @property {{label: string, points: number}} flush
+ * @property {{label: string, points: number}} knobs
+ * @property {number} total
+ */
+
+
+/**
  * Builds the deck of cards and renders it in the DOM.
  * Creates a row for each suit and adds cards for each rank within that suit.
  */
@@ -98,27 +118,34 @@ function reset() {
 
 /**
  * Calculates the total score for the current hand by summing all scoring categories.
- * @param {Array} cards - Array of card objects with rank, suit, and value.
- * @returns {number} The total score.
+ * @param {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function scoreHand() {
-    let score = 0;
-    const cards = getAllCards()
-    score += score15s(cards);
-    score += scorePairs(cards);
-    score += scoreRuns(cards);
-    score += scoreFlush(cards);
-    score += scoreKnobs(cards);
-    displayScore(score);
+    const scoring = {
+        fifteens: { label: "", points: 0 },
+        pairs: {label: "", points: 0 },
+        runs: { label: "", points: 0 },
+        flush: { label: "", points: 0 },
+        knobs: { label: "", points: 0 },
+        total: 0
+    };
+    const cards = getAllCards();
+    score15s(cards, scoring);
+    scorePairs(cards, scoring);
+    scoreRuns(cards, scoring);
+    scoreFlush(cards, scoring);
+    scoreKnobs(cards, scoring);
+    displayScore(scoring);
 }
 
 /**
  * Scores combinations of cards that sum to 15.
  * Each combination of cards that add up to 15 scores 2 points.
- * @param {Array} cards - Array of card objects.
- * @returns {number} The score for 15s.
+ * @param {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
-function score15s(cards) {
+function score15s(cards, scoring) {
 
     const values = cards.map(card => card.value)
 
@@ -140,17 +167,20 @@ function score15s(cards) {
 
     }
 
-    return combinations * 2;
+    const points = combinations * 2;
 
+    scoring.fifteens.label = `${combinations} Fifteen${combinations !== 1 ? "s" : ""}:`;
+    scoring.fifteens.points = points;
+    scoring.total += points;
 }
 
 /**
  * Scores pairs in the hand.
  * Two of a kind: 2 points, three of a kind: 6 points, four of a kind: 12 points.
- * @param {Array} cards - Array of card objects.
- * @returns {number} The score for pairs.
+ * @param {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
-function scorePairs(cards) {
+function scorePairs(cards, scoring) {
 
     const rankCounts = {};
 
@@ -166,26 +196,41 @@ function scorePairs(cards) {
     });
 
     let score = 0;
+    let pairs = 0;
+    let triple = false;
+    let quad = false;
 
     // convert counts into pairs
     Object.values(rankCounts).forEach(count => {
         if (count >= 2) {
-            score += count * (count - 1);
+            score += count * (count -1);
         }
+
+        if (count === 2) pairs++;
+        if (count === 3) triple =true;
+        if (count === 4) quad = true;
     });
 
-    return score;
+    let label = "";
 
+    if (quad) label = "Four of a Kind:";
+    else if (triple) label = "Three of a Kind:";
+    else if (pairs === 2) label = "Two Pairs:";
+    else if (pairs === 1) label = "One Pair:";
+
+    scoring.pairs.label = label;
+    scoring.pairs.points = score;
+    scoring.total += score;
 }
 
 /**
  * Scores runs (sequences) in the hand.
  * A run of 3 cards: 3 points, 4 cards: 4 points, etc.
  * Multipliers apply for duplicate ranks in the run.
- * @param {Array} cards - Array of card objects.
- * @returns {number} The score for runs.
+ * @param {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
-function scoreRuns(cards) {
+function scoreRuns(cards, scoring) {
 
     const values = cards.map(card => rankForRuns(card.rank));
 
@@ -199,6 +244,7 @@ function scoreRuns(cards) {
         .sort((a, b) => a - b);
     
     let maxRunLength = 0;
+    let bestMultiplier = 1;
     let score = 0;
 
     for (let start = 0; start < uniqueValues.length; start++) {
@@ -217,23 +263,39 @@ function scoreRuns(cards) {
         if (runLength >= 3) {
             if (runLength > maxRunLength) {
                 maxRunLength = runLength;
+                bestMultiplier = runMultiplier;
                 score = runLength * runMultiplier;
             } else if (runLength === maxRunLength) {
                 score += runLength * runMultiplier;
             }
         }
+
     }
 
-    return score;
+    let label = "";
+
+    if (maxRunLength >=3) {
+        if (bestMultiplier === 4) label = "Double Double Run of";
+        else if (bestMultiplier === 3) label = "Triple Run of";
+        else if (bestMultiplier === 2) label = "Double Run of";
+        else label = "Run of";
+
+        label = `${label} ${maxRunLength}:`;
+    };
+
+    scoring.runs.label = label;
+    scoring.runs.points = score;
+    scoring.total += score;
+
 }
 
 /**
  * Scores flushes in the hand.
  * 4 cards of the same suit: 4 points, plus 1 if the cut card matches: 5 points total.
- * @param {Array} cards - Array of card objects (first 4 are hand, last is cut).
- * @returns {number} The score for flush.
+ * @param {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
-function scoreFlush(cards) {
+function scoreFlush(cards, scoring) {
     let score = 0;
     const suits = cards.map(card => card.suit)
 
@@ -242,35 +304,56 @@ function scoreFlush(cards) {
         if (suits[0] === suits[4]) {
             score += 1;
         };
+
+        let label = `${score} card flush of ${suits[0]}:`;
+        scoring.flush.label = label;
+        scoring.flush.points = score;
+        scoring.total += score;
     };
-
-    return score;
-
 }
 
 /**
  * Scores knobs (right jack).
  * 1 point if any jack in the hand matches the suit of the cut card.
- * @param {Array} cards - Array of card objects (first 4 are hand, last is cut).
- * @returns {number} The score for knobs (0 or 1).
+ * @param {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
-function scoreKnobs(cards) {
+function scoreKnobs(cards, scoring) {
+
+    const cutSuit = cards[4].suit;
+
     for (let i = 0; i < 4; i++) {
-        if (cards[i].rank === "J" && cards[i].suit === cards[4].suit) {
-            return 1;  // One point for his Knobs.
+        if (cards[i].rank === "J" && cards[i].suit === cutSuit) {
+            
+            scoring.knobs.label = "One for his Knobs:";
+            scoring.knobs.points = 1;
+            scoring.total += 1;
+            return;
         }
     }
-
-    return 0; // No knobs found.
 }
 
 /**
  * Displays the calculated score in the UI.
- * @param {number} score - The total score to display.
+ * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
-function displayScore(score) {
+function displayScore(scoring) {
+    let scoringString = `<p id="scoring-breakdown"><strong>Scoring Breakdown:</strong><br>`;
+
+    for (const category in scoring) {
+
+        if (category === "total") continue;
+
+        if (scoring[category].label) {
+            scoringString += `${scoring[category].label} ${scoring[category].points}<br>`;
+        }
+    }
+
+    scoringString += `</p><strong>Total: ${scoring.total}</strong>`;
+
+
     const scoreContainer = document.getElementById("show-score");
-    scoreContainer.textContent = `Score: ${score}`;
+    scoreContainer.innerHTML = `${scoringString}`;
 }
 
 /**
@@ -284,11 +367,13 @@ function cardValue(rank) {
     if (["K", "Q", "J"].includes(rank)) return 10;
 
     return parseInt(rank);
+
+    
 }
 
 /**
  * Retrieves all cards currently in the hand and cut card slots.
- * @returns {Array} Array of card objects with rank, suit, and value.
+ * @returns {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
  */
 function getAllCards() {
     const cards = [];
