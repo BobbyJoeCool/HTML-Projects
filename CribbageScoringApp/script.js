@@ -1,4 +1,3 @@
-
 /**
  * Represents a playing card used in cribbage scoring.
  * @typedef {Object} Card
@@ -18,40 +17,48 @@
  * @property {number} total
  */
 
-
 /**
  * Builds the deck of cards and renders it in the DOM.
  * Creates a row for each suit and adds cards for each rank within that suit.
  */
 function buildDeck() {
+	const suits = ["hearts", "diamonds", "clubs", "spades"];
+	const ranks = [
+		"A",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"J",
+		"Q",
+		"K",
+	];
 
-    const suits = ["hearts", "diamonds", "clubs", "spades"];
-    const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+	const deckContainer = document.getElementById("deck");
 
-    const deckContainer = document.getElementById("deck");
+	suits.forEach((suit) => {
+		// create a row for each suit
+		const row = document.createElement("div");
+		row.classList.add("suit-row");
 
-    suits.forEach(suit => {
+		ranks.forEach((rank) => {
+			// create the card
+			const card = document.createElement("div");
+			card.classList.add("card", `suit-${suit}`);
+			card.dataset.rank = rank;
+			card.dataset.suit = suit;
+			card.dataset.value = cardValue(rank);
 
-        // create a row for each suit
-        const row = document.createElement("div");
-        row.classList.add("suit-row");
+			row.appendChild(card);
+		});
 
-        ranks.forEach(rank => {
-
-            // create the card
-            const card = document.createElement("div");
-            card.classList.add("card", `suit-${suit}`);
-            card.dataset.rank = rank;
-            card.dataset.suit = suit;
-            card.dataset.value = cardValue(rank);
-
-            row.appendChild(card);
-
-        });
-
-        deckContainer.appendChild(row);
-
-    });
+		deckContainer.appendChild(row);
+	});
 }
 
 const handSlots = document.querySelectorAll("#hand .card-slot");
@@ -60,30 +67,24 @@ const cutSlot = document.querySelector("#cut-card .card-slot");
 let handIndex = 0;
 let cutFilled = false;
 
-document.addEventListener("click", function(e) {
+document.addEventListener("click", function (e) {
+	const card = e.target.closest(".card");
+	if (!card) return;
 
-    const card = e.target.closest(".card");
-    if (!card) return;
+	if (card.closest("#hand") || card.closest("#cut-card")) {
+		return;
+	}
 
-    if (card.closest("#hand") || card.closest("#cut-card")) {
-        return;
-    }
-
-    // fill the hand first
-    if (handIndex < handSlots.length) {
-
-        handSlots[handIndex].appendChild(card);
-        handIndex++;
-
-    }
-    // then fill the cut card
-    else if (!cutFilled) {
-
-        cutSlot.appendChild(card);
-        cutFilled = true;
-
-    }
-
+	// fill the hand first
+	if (handIndex < handSlots.length) {
+		handSlots[handIndex].appendChild(card);
+		handIndex++;
+	}
+	// then fill the cut card
+	else if (!cutFilled) {
+		cutSlot.appendChild(card);
+		cutFilled = true;
+	}
 });
 
 /**
@@ -91,29 +92,29 @@ document.addEventListener("click", function(e) {
  * Rebuilds the deck after clearing.
  */
 function reset() {
-    const deck = document.getElementById("deck");
+	const deck = document.getElementById("deck");
 
-    // remove everything from deck
-    deck.innerHTML = "";
+	// remove everything from deck
+	deck.innerHTML = "";
 
-    // clear hand slots
-    handSlots.forEach(slot => {
-        slot.innerHTML = "";
-    });
+	// clear hand slots
+	handSlots.forEach((slot) => {
+		slot.innerHTML = "";
+	});
 
-    // clear cut card
-    cutSlot.innerHTML = "";
+	// clear cut card
+	cutSlot.innerHTML = "";
 
-    // reset state variables
-    handIndex = 0;
-    cutFilled = false;
+	// reset state variables
+	handIndex = 0;
+	cutFilled = false;
 
-    // reset Score
-    const scoreContainer = document.getElementById("show-score");
-    scoreContainer.textContent = `Score:`;
+	// reset Score
+	const scoreContainer = document.getElementById("show-score");
+	scoreContainer.textContent = `Score:`;
 
-    // rebuild the deck
-    buildDeck();
+	// rebuild the deck
+	buildDeck();
 }
 
 /**
@@ -122,21 +123,21 @@ function reset() {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function scoreHand() {
-    const scoring = {
-        fifteens: { label: "", points: 0 },
-        pairs: {label: "", points: 0 },
-        runs: { label: "", points: 0 },
-        flush: { label: "", points: 0 },
-        knobs: { label: "", points: 0 },
-        total: 0
-    };
-    const cards = getAllCards();
-    score15s(cards, scoring);
-    scorePairs(cards, scoring);
-    scoreRuns(cards, scoring);
-    scoreFlush(cards, scoring);
-    scoreKnobs(cards, scoring);
-    displayScore(scoring);
+	const scoring = {
+		fifteens: { label: "", points: 0 },
+		pairs: { label: "", points: 0 },
+		runs: { label: "", points: 0 },
+		flush: { label: "", points: 0 },
+		knobs: { label: "", points: 0 },
+		total: 0,
+	};
+	const cards = getAllCards();
+	score15s(cards, scoring);
+	scorePairs(cards, scoring);
+	scoreRuns(cards, scoring);
+	scoreFlush(cards, scoring);
+	scoreKnobs(cards, scoring);
+	displayScore(scoring);
 }
 
 /**
@@ -146,32 +147,33 @@ function scoreHand() {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function score15s(cards, scoring) {
+	const values = cards.map((card) => card.value);
 
-    const values = cards.map(card => card.value)
+	let combinations = 0;
 
-    let combinations = 0;
+	// Nested For Loop using a Bitwise Function to iterate through all possible combinations of cards to look for 15s.
+	for (let mask = 1; mask < 1 << values.length; mask++) {
+		// cycles through each combination
 
-    // Nested For Loop using a Bitwise Function to iterate through all possible combinations of cards to look for 15s.
-    for (let mask = 1; mask < (1 << values.length); mask++) { // cycles through each combination
+		let sum = 0;
 
-        let sum = 0;
+		for (let i = 0; i < values.length; i++) {
+			// cycles through each card
 
-        for (let i = 0; i < values.length; i++) { // cycles through each card
+			if (mask & (1 << i)) {
+				// checks if the bit is active in this bit
+				sum += values[i];
+			}
+		}
 
-            if (mask & (1 << i)) { // checks if the bit is active in this bit
-                sum += values[i];
-            }
-        }
+		if (sum === 15) combinations++;
+	}
 
-        if (sum === 15) combinations++
+	const points = combinations * 2;
 
-    }
-
-    const points = combinations * 2;
-
-    scoring.fifteens.label = `${combinations} Fifteen${combinations !== 1 ? "s" : ""}:`;
-    scoring.fifteens.points = points;
-    scoring.total += points;
+	scoring.fifteens.label = `${combinations} Fifteen${combinations !== 1 ? "s" : ""}:`;
+	scoring.fifteens.points = points;
+	scoring.total += points;
 }
 
 /**
@@ -181,46 +183,43 @@ function score15s(cards, scoring) {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function scorePairs(cards, scoring) {
+	const rankCounts = {};
 
-    const rankCounts = {};
+	// Count how many of each rank
+	cards.forEach((card) => {
+		if (!rankCounts[card.rank]) {
+			rankCounts[card.rank] = 0;
+		}
 
-    // Count how many of each rank
-    cards.forEach(card => {
+		rankCounts[card.rank]++;
+	});
 
-        if (!rankCounts[card.rank]) {
-            rankCounts[card.rank] = 0;
-        }
+	let score = 0;
+	let pairs = 0;
+	let triple = false;
+	let quad = false;
 
-        rankCounts[card.rank]++;
+	// convert counts into pairs
+	Object.values(rankCounts).forEach((count) => {
+		if (count >= 2) {
+			score += count * (count - 1);
+		}
 
-    });
+		if (count === 2) pairs++;
+		if (count === 3) triple = true;
+		if (count === 4) quad = true;
+	});
 
-    let score = 0;
-    let pairs = 0;
-    let triple = false;
-    let quad = false;
+	let label = "";
 
-    // convert counts into pairs
-    Object.values(rankCounts).forEach(count => {
-        if (count >= 2) {
-            score += count * (count -1);
-        }
+	if (quad) label = "Four of a Kind:";
+	else if (triple) label = "Three of a Kind:";
+	else if (pairs === 2) label = "Two Pairs:";
+	else if (pairs === 1) label = "One Pair:";
 
-        if (count === 2) pairs++;
-        if (count === 3) triple =true;
-        if (count === 4) quad = true;
-    });
-
-    let label = "";
-
-    if (quad) label = "Four of a Kind:";
-    else if (triple) label = "Three of a Kind:";
-    else if (pairs === 2) label = "Two Pairs:";
-    else if (pairs === 1) label = "One Pair:";
-
-    scoring.pairs.label = label;
-    scoring.pairs.points = score;
-    scoring.total += score;
+	scoring.pairs.label = label;
+	scoring.pairs.points = score;
+	scoring.total += score;
 }
 
 /**
@@ -231,62 +230,59 @@ function scorePairs(cards, scoring) {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function scoreRuns(cards, scoring) {
+	const values = cards.map((card) => rankForRuns(card.rank));
 
-    const values = cards.map(card => rankForRuns(card.rank));
+	const counts = {};
+	values.forEach((v) => {
+		counts[v] = (counts[v] || 0) + 1;
+	});
 
-    const counts = {};
-    values.forEach(v => {
-        counts[v] = (counts[v] || 0) + 1;
-    });
+	const uniqueValues = Object.keys(counts)
+		.map((v) => parseInt(v))
+		.sort((a, b) => a - b);
 
-    const uniqueValues = Object.keys(counts)
-        .map(v => parseInt(v))
-        .sort((a, b) => a - b);
-    
-    let maxRunLength = 0;
-    let bestMultiplier = 1;
-    let score = 0;
+	let maxRunLength = 0;
+	let bestMultiplier = 1;
+	let score = 0;
 
-    for (let start = 0; start < uniqueValues.length; start++) {
-        let runLength = 1;
-        let runMultiplier = counts[uniqueValues[start]];
+	for (let start = 0; start < uniqueValues.length; start++) {
+		let runLength = 1;
+		let runMultiplier = counts[uniqueValues[start]];
 
-        for (let next = start + 1; next < uniqueValues.length; next++) {
-            if (uniqueValues[next] === uniqueValues[next - 1] + 1) {
-                runLength++;
-                runMultiplier *= counts[uniqueValues[next]];
-            } else {
-                break;
-            }
-        }
+		for (let next = start + 1; next < uniqueValues.length; next++) {
+			if (uniqueValues[next] === uniqueValues[next - 1] + 1) {
+				runLength++;
+				runMultiplier *= counts[uniqueValues[next]];
+			} else {
+				break;
+			}
+		}
 
-        if (runLength >= 3) {
-            if (runLength > maxRunLength) {
-                maxRunLength = runLength;
-                bestMultiplier = runMultiplier;
-                score = runLength * runMultiplier;
-            } else if (runLength === maxRunLength) {
-                score += runLength * runMultiplier;
-            }
-        }
+		if (runLength >= 3) {
+			if (runLength > maxRunLength) {
+				maxRunLength = runLength;
+				bestMultiplier = runMultiplier;
+				score = runLength * runMultiplier;
+			} else if (runLength === maxRunLength) {
+				score += runLength * runMultiplier;
+			}
+		}
+	}
 
-    }
+	let label = "";
 
-    let label = "";
+	if (maxRunLength >= 3) {
+		if (bestMultiplier === 4) label = "Double Double Run of";
+		else if (bestMultiplier === 3) label = "Triple Run of";
+		else if (bestMultiplier === 2) label = "Double Run of";
+		else label = "Run of";
 
-    if (maxRunLength >=3) {
-        if (bestMultiplier === 4) label = "Double Double Run of";
-        else if (bestMultiplier === 3) label = "Triple Run of";
-        else if (bestMultiplier === 2) label = "Double Run of";
-        else label = "Run of";
+		label = `${label} ${maxRunLength}:`;
+	}
 
-        label = `${label} ${maxRunLength}:`;
-    };
-
-    scoring.runs.label = label;
-    scoring.runs.points = score;
-    scoring.total += score;
-
+	scoring.runs.label = label;
+	scoring.runs.points = score;
+	scoring.total += score;
 }
 
 /**
@@ -296,20 +292,20 @@ function scoreRuns(cards, scoring) {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function scoreFlush(cards, scoring) {
-    let score = 0;
-    const suits = cards.map(card => card.suit)
+	let score = 0;
+	const suits = cards.map((card) => card.suit);
 
-    if (suits[0] === suits[1] && suits [1] === suits[2] && suits[2] === suits[3]) {
-        score += 4;
-        if (suits[0] === suits[4]) {
-            score += 1;
-        };
+	if (suits[0] === suits[1] && suits[1] === suits[2] && suits[2] === suits[3]) {
+		score += 4;
+		if (suits[0] === suits[4]) {
+			score += 1;
+		}
 
-        let label = `${score} card flush of ${suits[0]}:`;
-        scoring.flush.label = label;
-        scoring.flush.points = score;
-        scoring.total += score;
-    };
+		let label = `${score} card flush of ${suits[0]}:`;
+		scoring.flush.label = label;
+		scoring.flush.points = score;
+		scoring.total += score;
+	}
 }
 
 /**
@@ -319,18 +315,16 @@ function scoreFlush(cards, scoring) {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function scoreKnobs(cards, scoring) {
+	const cutSuit = cards[4].suit;
 
-    const cutSuit = cards[4].suit;
-
-    for (let i = 0; i < 4; i++) {
-        if (cards[i].rank === "J" && cards[i].suit === cutSuit) {
-            
-            scoring.knobs.label = "One for his Knobs:";
-            scoring.knobs.points = 1;
-            scoring.total += 1;
-            return;
-        }
-    }
+	for (let i = 0; i < 4; i++) {
+		if (cards[i].rank === "J" && cards[i].suit === cutSuit) {
+			scoring.knobs.label = "One for his Knobs:";
+			scoring.knobs.points = 1;
+			scoring.total += 1;
+			return;
+		}
+	}
 }
 
 /**
@@ -338,22 +332,20 @@ function scoreKnobs(cards, scoring) {
  * @param {Scoring} scoring - Score breakdown object that will be updated.
  */
 function displayScore(scoring) {
-    let scoringString = `<p id="scoring-breakdown"><strong>Scoring Breakdown:</strong><br>`;
+	let scoringString = `<p id="scoring-breakdown"><strong>Scoring Breakdown:</strong><br>`;
 
-    for (const category in scoring) {
+	for (const category in scoring) {
+		if (category === "total") continue;
 
-        if (category === "total") continue;
+		if (scoring[category].label) {
+			scoringString += `${scoring[category].label} ${scoring[category].points}<br>`;
+		}
+	}
 
-        if (scoring[category].label) {
-            scoringString += `${scoring[category].label} ${scoring[category].points}<br>`;
-        }
-    }
+	scoringString += `</p><strong>Total: ${scoring.total}</strong>`;
 
-    scoringString += `</p><strong>Total: ${scoring.total}</strong>`;
-
-
-    const scoreContainer = document.getElementById("show-score");
-    scoreContainer.innerHTML = `${scoringString}`;
+	const scoreContainer = document.getElementById("show-score");
+	scoreContainer.innerHTML = `${scoringString}`;
 }
 
 /**
@@ -363,12 +355,10 @@ function displayScore(scoring) {
  * @returns {number} The numerical value.
  */
 function cardValue(rank) {
-    if (rank === "A") return 1;
-    if (["K", "Q", "J"].includes(rank)) return 10;
+	if (rank === "A") return 1;
+	if (["K", "Q", "J"].includes(rank)) return 10;
 
-    return parseInt(rank);
-
-    
+	return parseInt(rank);
 }
 
 /**
@@ -376,27 +366,27 @@ function cardValue(rank) {
  * @returns {Card[]} cards - The five cards in the hand (four hand cards plus the cut card).
  */
 function getAllCards() {
-    const cards = [];
+	const cards = [];
 
-    handSlots.forEach(slot => {
-        const card = slot.querySelector(".card");
+	handSlots.forEach((slot) => {
+		const card = slot.querySelector(".card");
 
-        cards.push({
-            rank: card.dataset.rank,
-            suit: card.dataset.suit,
-            value: Number(card.dataset.value)
-        });
-    });
+		cards.push({
+			rank: card.dataset.rank,
+			suit: card.dataset.suit,
+			value: Number(card.dataset.value),
+		});
+	});
 
-    const cut = cutSlot.querySelector(".card");
+	const cut = cutSlot.querySelector(".card");
 
-    cards.push({
-        rank: cut.dataset.rank,
-        suit: cut.dataset.suit,
-        value: Number(cut.dataset.value)
-    });
+	cards.push({
+		rank: cut.dataset.rank,
+		suit: cut.dataset.suit,
+		value: Number(cut.dataset.value),
+	});
 
-    return cards;
+	return cards;
 }
 
 /**
@@ -406,11 +396,11 @@ function getAllCards() {
  * @returns {number} The numerical value for run calculation.
  */
 function rankForRuns(rank) {
-    if (rank === "A") return 1;
-    if (rank === "J") return 11;
-    if (rank === "Q") return 12;
-    if (rank === "K") return 13;
-    return parseInt(rank);
+	if (rank === "A") return 1;
+	if (rank === "J") return 11;
+	if (rank === "Q") return 12;
+	if (rank === "K") return 13;
+	return parseInt(rank);
 }
 
 buildDeck();

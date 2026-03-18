@@ -1,83 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<title>Robert Breutzmann HTML-CSS-JavaScript Projects</title>
+	</head>
+	<body>
+		<main>
+			<h1>Cribbage Scoring App</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Robert Breutzmann HTML-CSS-JavaScript Projects</title>
-</head>
-<body>
-<main>
-    <h1>Cribbage Scoring App</h1>
+			<div id="top-section">
+				<div id="instructions">
+					<h2>Instructions</h2>
+					<ul>
+						<li>Select the 4 cards for your hand.</li>
+						<li>Select the card for the "cut" card.</li>
+						<li>Click "Score" to see the score.</li>
+						<li>This will fill your hand FIRST, then the cut card.</li>
+						<li>Crib scoring currently not supported.</li>
+						<li>Click RESET to reset cards and score.</li>
+					</ul>
 
-    <div id="top-section">
-        <div id="instructions">
-            <h2>Instructions</h2>
-            <ul>
-                <li>Select the 4 cards for your hand.</li>
-                <li>Select the card for the "cut" card.</li>
-                <li>Click "Score" to see the score.</li>
-                <li>This will fill your hand FIRST, then the cut card.</li>
-                <li>Crib scoring currently not supported.</li>
-                <li>Click RESET to reset cards and score.</li>
-            </ul>
+					<h2>Scoring Rules</h2>
+					<ul>
+						<li>Card values: Aces = 1, face cards = 10.</li>
+						<li>
+							<strong>Fifteens</strong>: Any combination totaling 15 —
+							<strong>2 points</strong>.
+						</li>
+						<li>
+							<strong>Pairs</strong>: Any pair — <strong>2 points</strong>.
+							<br /><em
+								><strong>Three of a kind</strong> = 3 pairs
+								<strong>(6 points)</strong>. <strong>Four of a kind</strong> = 6
+								pairs <strong>(12 points)</strong>.</em
+							>
+						</li>
+						<li>
+							<strong>Runs</strong>: Three or more consecutive cards —
+							<strong>1 point per card</strong>. <br /><em
+								>Duplicate ranks multiply the run.</em
+							>
+						</li>
+						<li>
+							<strong>Flush</strong>: Four cards in hand of the same suit —
+							<strong>4 points</strong>. <br /><em
+								>If the cut card matches the suit, score
+								<strong>5 points</strong>.</em
+							>
+						</li>
+						<li>
+							<strong>Knobs</strong>: Jack in hand matching the cut card’s suit
+							— <strong>1 point</strong>.
+						</li>
+					</ul>
+				</div>
 
-            <h2>Scoring Rules</h2>
-            <ul>
-                <li>Card values: Aces = 1, face cards = 10.</li>
-                <li><strong>Fifteens</strong>: Any combination totaling 15 — <strong>2 points</strong>.</li>
-                <li>
-                    <strong>Pairs</strong>: Any pair — <strong>2 points</strong>.
-                    <br><em><strong>Three of a kind</strong> = 3 pairs <strong>(6 points)</strong>. <strong>Four of a kind</strong> = 6 pairs <strong>(12 points)</strong>.</em>
-                </li>
-                <li>
-                    <strong>Runs</strong>: Three or more consecutive cards — <strong>1 point per card</strong>.
-                    <br><em>Duplicate ranks multiply the run.</em>
-                </li>
-                <li>
-                    <strong>Flush</strong>: Four cards in hand of the same suit — <strong>4 points</strong>.
-                    <br><em>If the cut card matches the suit, score <strong>5 points</strong>.</em>
-                </li>
-                <li><strong>Knobs</strong>: Jack in hand matching the cut card’s suit — <strong>1 point</strong>.</li>
-            </ul>
-        </div>
+				<div id="hand-area">
+					<h2>Your Hand</h2>
 
-        <div id="hand-area">
+					<div id="hand">
+						<div class="card-slot"></div>
+						<div class="card-slot"></div>
+						<div class="card-slot"></div>
+						<div class="card-slot"></div>
+					</div>
 
-            <h2>Your Hand</h2>
+					<h2>Cut Card</h2>
 
-            <div id="hand">
-                <div class="card-slot"></div>
-                <div class="card-slot"></div>
-                <div class="card-slot"></div>
-                <div class="card-slot"></div>
-            </div>
+					<div id="cut-card">
+						<div class="card-slot"></div>
+					</div>
 
-            <h2>Cut Card</h2>
+					<button type="button" id="reset-button" onClick="reset()">
+						Reset
+					</button>
+				</div>
+			</div>
 
-            <div id="cut-card">
-                <div class="card-slot"></div>
-            </div>
+			<hr />
 
-            <button type="button" id="reset-button" onClick="reset()">Reset</button>
-            
-        </div>
-    </div>
+			<div id="score">
+				<p id="show-score">Score:</p>
+			</div>
 
-<hr>
+			<button type="button" id="score-button" onClick="scoreHand()">
+				Score
+			</button>
 
-<div id="score">
-    <p id="show-score">Score:</p>
-</div>
+			<hr />
 
-<button type="button" id="score-button" onClick="scoreHand()">Score</button>
-
-<hr>
-
-<div id="deck"></div>
-
-</main>
-</body>
-<script src="script.js"></script>
+			<div id="deck"></div>
+		</main>
+	</body>
+	<script src="script.js"></script>
 </html>
