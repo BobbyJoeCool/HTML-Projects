@@ -1,0 +1,16 @@
+{
+	"id": "damage-dice-roller",
+	"title": "Damage Dice Roller",
+	"description": "A simple dice grouping and damage rolling tool developed as a portfolio project.",
+	"version": "1.0.0",
+	"authors": [
+		{
+			"name": "Robert Breutzmann"
+		}
+	],
+	"scripts": ["scripts/dice-app.js"],
+	"styles": ["styles/dice-app.css"],
+	"compatibility": {
+		"verified": "13"
+	}
+}

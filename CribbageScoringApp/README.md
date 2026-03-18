@@ -6,9 +6,10 @@ This application allows users to select a Cribbage hand and automatically calcul
 
 ---
 
-# Features
+## Features
 
 ### Hand Scoring
+
 Users can select:
 
 - Four cards for their hand
@@ -19,6 +20,7 @@ The application then calculates the total score.
 ---
 
 ### Score Breakdown
+
 The score is broken down by category:
 
 - Fifteens
@@ -40,19 +42,22 @@ Knobs: 1
 ---
 
 ### Crib Mode
+
 A toggle that switches scoring rules for the **crib**.
 
 Flush rules change:
 
 Normal Hand:
+
 - 4-card flush allowed
 
 Crib:
+
 - Flush only counts if all **5 cards match**
 
 ---
 
-# Card Interface
+## Card Interface
 
 Cards are displayed using a simple visual design:
 
@@ -79,7 +84,7 @@ Suit icons:
 
 ---
 
-# Technologies Used
+## Technologies Used
 
 - HTML5
 - CSS3
@@ -95,7 +100,7 @@ Concepts demonstrated:
 
 ---
 
-# Project Structure
+## Project Structure
 
 ```
 cribbage-scoring-app
@@ -117,7 +122,7 @@ cribbage-scoring-app
 
 ---
 
-# How to Use
+## How to Use
 
 1. Select four cards for your hand.
 2. Select the flip card.
@@ -130,7 +135,7 @@ Enable **Crib Mode** to apply crib scoring rules.
 
 ---
 
-# Future Improvements
+## Future Improvements
 
 Possible enhancements include:
 
@@ -142,7 +147,7 @@ Possible enhancements include:
 
 ---
 
-# Author
+## Author
 
 Robert Breutzmann
 

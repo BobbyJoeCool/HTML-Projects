@@ -1,0 +1,94 @@
+<!-- Main Application Container -->
+<div class="damage-dice-app">
+	<!-- First Row: d4, d6, d8 dice groups with modifiers -->
+	<div class="dice-row">
+		<!-- d4 Dice Group -->
+		<div class="dice-group">
+			<button id="d4-btn" data-action="add-dice" data-dice="d4"></button>
+			<label for="d4-text" class="sr-only">d4:</label>
+			<input type="text" id="d4-text" name="d4" placeholder="0" />
+		</div>
+		<!-- d6 Dice Group -->
+		<div class="dice-group">
+			<button id="d6-btn"></button>
+			<label for="d6-text" class="sr-only">d6:</label>
+			<input type="text" id="d6-text" name="d6" placeholder="0" />
+		</div>
+		<!-- d8 Dice Group -->
+		<div class="dice-group">
+			<button id="d8-btn"></button>
+			<label for="d8-text" class="sr-only">d8 count</label>
+			<input type="text" id="d8-text" name="d8" placeholder="0" />
+		</div>
+		<!-- Modifier Controls: Static damage and damage type -->
+		<div class="modifiers">
+			<label for="static-damage-text">Static Damage:</label>
+			<input
+				type="text"
+				id="static-damage-text"
+				name="static-damage"
+				placeholder="0"
+			/>
+			<div id="damage-type-row">
+				<label for="damage-type">Damage Type:</label>
+				<select id="damage-type" name="damage-type">
+					<option value="A">Acid</option>
+					<option value="B">Bludgeoning</option>
+					<option value="C">Cold</option>
+					<option value="Fi" selected>Fire</option>
+					<option value="Fo">Force</option>
+					<option value="L">Lightning</option>
+					<option value="N">Necrotic</option>
+					<option value="Pi">Piercing</option>
+					<option value="Po">Poison</option>
+					<option value="Py">Psychic</option>
+					<option value="R">Radiant</option>
+					<option value="S">Slashing</option>
+					<option value="T">Thunder</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<!-- Second Row: d10, d12, d20 dice groups with control buttons -->
+	<div class="dice-row">
+		<!-- d10 Dice Group -->
+		<div class="dice-group">
+			<button id="d10-btn"></button>
+			<label for="d10-text" class="sr-only">d10 count</label>
+			<input type="text" id="d10-text" name="d10" placeholder="0" />
+		</div>
+		<!-- d12 Dice Group -->
+		<div class="dice-group">
+			<button id="d12-btn"></button>
+			<label for="d12-text" class="sr-only">d12 count</label>
+			<input type="text" id="d12-text" name="d12" placeholder="0" />
+		</div>
+		<!-- d20 Dice Group -->
+		<div class="dice-group">
+			<button id="d20-btn"></button>
+			<label for="d20-text" class="sr-only">d20 count</label>
+			<input type="text" id="d20-text" name="d20" placeholder="0" />
+		</div>
+		<!-- Control Buttons: Add Damage, Reset, Roll -->
+		<div id="damage-controls">
+			<button id="add-damage-btn">Add Damage</button>
+			<div id="reset-roll">
+				<button id="reset-btn">Reset</button>
+				<button id="roll-btn">Roll</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Formula Display Row -->
+	<div id="row3" class="dice-row">
+		<label for="formula-text">ƒ:</label>
+		<textarea
+			id="formula-text"
+			placeholder="Click 'Add Damage' to populate"
+		></textarea>
+	</div>
+
+	<!-- Roll Results Output Area -->
+	<div id="row4-output">Roll results appear here</div>
+</div>
