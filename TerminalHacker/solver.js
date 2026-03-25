@@ -82,6 +82,7 @@ function listSolver(words, attempts) {
 	let newList = []
 	
 	isListValid(words)
+	isAttemptsValid(attempts)
 
 	for (const word of words) {
 		let isValid = true
