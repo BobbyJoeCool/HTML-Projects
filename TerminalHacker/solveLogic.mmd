@@ -1,0 +1,33 @@
+flowchart TD
+    A[Start Solve] --> B[Receive originalWords + history]
+
+    B --> C[Create empty filtered list]
+
+    C --> D[Loop through each word]
+
+    D --> E[Assume word is valid]
+
+    E --> F[Loop through each constraint]
+
+    F --> G[Compare word to guess]
+
+    G --> H[Count positional matches]
+
+    H --> I{Matches == expected?}
+
+    I -->|No| J[Mark word invalid]
+    I -->|Yes| K[Continue checking]
+
+    J --> L[Break constraint loop]
+
+    K --> M{More constraints?}
+    M -->|Yes| F
+    M -->|No| N[Word is valid]
+
+    L --> O{More words?}
+    N --> O
+
+    O -->|Yes| D
+    O -->|No| P[Return filtered list]
+
+    P --> Q[End]

@@ -1,0 +1,26 @@
+flowchart TD
+    A[Start] --> B[User enters word list]
+    B --> C[Validate input]
+
+    C -->|Invalid| D[Show error]
+    D --> B
+
+    C -->|Valid| E[Store original words]
+    E --> F[Initialize state]
+    F --> G[Display candidate words]
+
+    G --> H{More than one word remaining?}
+
+    H -->|No| I[Display solution]
+    I --> J[End]
+
+    H -->|Yes| K[User selects guess]
+    K --> L[User enters match count]
+
+    L --> M[Add to history]
+    M --> N[Recalculate using constraints]
+
+    N --> O[Update filtered words]
+    O --> P[Render updated UI]
+
+    P --> G
