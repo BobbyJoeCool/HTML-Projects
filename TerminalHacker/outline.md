@@ -1,8 +1,8 @@
-# Project Outline: Fallout Terminal Hacking Solver
+# Project Outline: Terminal Hacking Solver
 
 ## 1. Problem Definition
 
-Develop a responsive web application that solves the Fallout terminal hacking puzzle using constraint-based logic.
+Build a responsive web application that helps players solve the Fallout terminal hacking puzzle by filtering candidate passwords based on exact-match feedback.
 
 ---
 
@@ -10,96 +10,89 @@ Develop a responsive web application that solves the Fallout terminal hacking pu
 
 ### Inputs
 
-- List of candidate words (equal length)
-- User-selected guess
-- Match count (correct letters in correct position)
+- List of candidate words entered through a textarea
+- A selected guess from the displayed word list
+- Match count: number of letters in the correct position
 
 ### Outputs
 
-- Filtered list of valid candidate words
+- Updated list of valid candidate words
+- Attempt history showing previous guesses and match counts
+- Error messages for invalid input
 
 ---
 
 ## 3. System Architecture
 
-- Client-side only application
-- Runs entirely in browser
+- Client-side web application
+- Runs entirely in the browser
 - No backend required
-- State-driven UI updates
+- Static assets include HTML, CSS, and JavaScript
 
 ---
 
 ## 4. Core Modules
 
-### 4.1 UI Layer (index.html, styles.css)
+### 4.1 UI Layer (`index.html`, `style.css`)
 
 Responsibilities:
 
-- Input area for word list
-- Display candidate words
-- Allow word selection (tap/click)
-- Input for match count
-- Display guess history
-- Render filtered results
+- Render the terminal-style interface
+- Collect word list input
+- Display selectable candidate words
+- Show selected guess and match input
+- Display attempt history and feedback messages
 
 ---
 
-### 4.2 State Management (app.js)
+### 4.2 State Management (`app.js`)
 
 State Model:
 
+```js
 {
-  originalWords: [],
-  filteredWords: [],
-  wordLength: null,
-  selectedGuess: null,
-  history: []
+  masterList: [],
+  currentList: [],
+  attempts: [],
+  selectedWord: null,
 }
+```
 
 Responsibilities:
 
-- Handle user interactions
-- Maintain application state
-- Trigger solver recalculation
-- Update UI dynamically
+- Validate and store the input word list
+- Manage user selections and attempt history
+- Call solver logic on each submitted guess
+- Update the UI based on state changes
 
 ---
 
-### 4.3 Solver Logic (solver.js)
+### 4.3 Solver Logic (`solver.js`)
 
-countMatches(word1, word2)
+Functions:
 
-- Compares characters by position
-- Returns number of exact matches
+- `isListValid(words)`
+  - Validates the word list structure and equal length requirement
+- `isAttemptsValid(attempts, wordLength)`
+  - Validates each guess/match record
+- `listSolver(words, attempts)`
+  - Filters candidate words to those consistent with all guess constraints
 
-applyConstraints(words, history)
+---
 
-- Applies all previous guesses as constraints
-- Returns only valid candidate words
+### 4.4 Test Harness (`test.html`, `test.js`)
+
+Responsibilities:
+
+- Provide example test cases for solver behavior
+- Validate invalid input handling
+- Confirm impossible constraint detection
 
 ---
 
 ## 5. Application Flow
 
-Input words  
-↓  
-Validate input  
-↓  
-Store original words  
-↓  
-Display candidates  
-↓  
-User selects guess  
-↓  
-User enters match count  
-↓  
-Store constraint (history)  
-↓  
-Recalculate valid words  
-↓  
-Update UI  
-↓  
-Repeat  
+Input words → Validate list → Store list → Display candidates → Select guess → Enter match count → Submit attempt → Recalculate valid words → Update UI → Repeat
 
 ---
 
@@ -107,71 +100,74 @@ Repeat
 
 ### Match Counting
 
-- Compare characters index-by-index
-- Increment counter for matches
+- Compare characters at each index between a guess and a candidate
+- Count positions where letters match exactly
 
-Time Complexity: O(m)
+Time Complexity: O(m) per comparison, where `m` is word length
 
 ---
 
 ### Constraint Filtering
 
-- For each word:
-  - Check against all constraints
-  - Keep only valid words
+- For each candidate word:
+  - Verify it matches every guess exactly in the required positions
+  - Keep only valid candidates
 
-Time Complexity: O(n × m × k)
+Time Complexity: O(n × k × m)
 
-- n = number of words  
-- m = word length  
-- k = number of guesses  
+- `n` = number of candidate words
+- `k` = number of submitted attempts
+- `m` = word length
 
 ---
 
 ## 7. UI / UX Considerations
 
-### Mobile-First Design
+### Mobile-Friendly
 
-- Vertical layout
-- Large touch targets
-- Scrollable word list
+- Single-column terminal container
+- Large buttons and input controls
+- Scrollable candidate list for small screens
 
 ### Interaction Design
 
-- Tap to select guess
-- Numeric input for matches
-- Immediate feedback
+- CTRL+ENTER or button to submit word list
+- Click/tap a word to choose it
+- Enter match count and submit each guess
+- Immediate filtering and history updates
 
-### Enhancements
+### Feedback
 
-- Display guess history
-- Disable invalid inputs
-- Optional animations
+- Error messages for invalid formats or empty input
+- Highlight selected word visibly
+- Disable eliminated candidate buttons
 
 ---
 
 ## 8. Edge Cases
 
-- Words of different lengths
-- Empty input
-- Duplicate words
-- Invalid match count
-- No guess selected
-- No remaining valid words
+- Empty or missing word list
+- Words with mixed lengths
+- Non-string or malformed entries
+- Invalid match count values
+- No word selected when submitting
+- All candidates eliminated by constraints
 
 ---
 
 ## 9. Testing Strategy
 
-### Unit Testing
+### Unit Tests
 
-- countMatches
-- applyConstraints
+- Validate word list structure
+- Validate attempt history format
+- Filter candidate words with `listSolver`
 
-### Integration Testing
+### Integration Tests
 
-- Full workflow simulation
-- Multi-constraint validation
+- Run the full app flow with example inputs
+- Test invalid user inputs and error messaging
+- Confirm the solver updates candidate lists consistently
 
 ---
 
@@ -179,30 +175,30 @@ Time Complexity: O(n × m × k)
 
 ### Phase 1
 
-- Solver logic
+- Build solver and input validation
 
 ### Phase 2
 
-- UI structure
+- Create the terminal-style UI
 
 ### Phase 3
 
-- Interaction + state
+- Wire interactions and state updates
 
 ### Phase 4
 
-- Validation + UX polish
+- Add history, validation, and UX polish
 
 ### Phase 5
 
-- Best guess feature
+- Add optional features like guess suggestions and persistence
 
 ---
 
 ## 11. End Goal
 
-Deliver a polished, responsive web application that:
+Create a clean, responsive web app that:
 
-- Accurately solves the puzzle
-- Provides intuitive UX
-- Demonstrates strong frontend engineering practices
+- helps players solve Fallout terminal hacking puzzles
+- surfaces valid candidate words after each guess
+- demonstrates practical frontend state management and algorithm design

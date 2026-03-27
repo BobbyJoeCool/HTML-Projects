@@ -1,50 +1,40 @@
-# Fallout Terminal Hacking Solver (Web App)
+# Terminal Hacking Solver (Web App)
 
-A mobile-friendly web application that assists players in solving the terminal hacking minigame from Fallout 3, Fallout: New Vegas, and Fallout 4.
+A mobile-friendly browser app that helps players solve the Fallout terminal hacking puzzle by filtering candidate passwords using exact-match feedback.
 
 ---
 
 ## Project Overview
 
-This application helps players deduce the correct password by applying logical constraints based on feedback from each guess.
+This app lets the user enter a list of candidate words, then select guesses and enter the number of exact letter matches returned by the game.
 
 ### Game Rules Recap
 
-- A list of candidate words is provided (all equal length)
-- The user has limited attempts to guess the correct password
-- After each guess, the system returns:
-  - Number of correct letters in the correct position
+- Candidate words must all be the same length
+- The user selects one guess from the candidate list
+- The game returns the number of letters in the correct position
+- The app eliminates words that cannot satisfy all previous guesses
 
-The application uses this feedback to eliminate impossible words and narrow down the solution.
-
----
-
-## Key Improvement Over Basic Solvers
-
-This app uses a constraint-based system, not step-by-step filtering.
-
-- All guesses are stored as constraints
-- The solution space is recomputed from the original list each time
-- Ensures correctness across multiple guesses
+The solver recomputes the valid word list from the original candidate set each time a guess is submitted.
 
 ---
 
 ## How It Works
 
-1. User inputs a list of candidate words
-2. The app validates and stores the list
-3. User selects a guess
-4. User inputs match count
-5. The guess is stored as a constraint
-6. The app recalculates valid candidates using all constraints
-7. Process repeats until one word remains
+1. The user enters a list of password candidates in the textarea
+2. The app validates the list and switches into solve mode
+3. Available words appear as selectable buttons
+4. The user selects a word and enters the match count
+5. The guess is added to the attempt history
+6. The app filters candidate words using all stored constraints
+7. The remaining candidates update instantly
 
 ---
 
 ## Tech Stack
 
 - HTML5
-- CSS3 (Mobile-first responsive design)
+- CSS3
 - JavaScript (Vanilla)
 
 ---
@@ -52,21 +42,24 @@ This app uses a constraint-based system, not step-by-step filtering.
 ## Core Concepts Demonstrated
 
 - DOM manipulation
-- Event-driven architecture
-- State management
-- Constraint-based filtering
-- Algorithm design
-- Responsive UI development
+- Event-driven UI updates
+- Application state management
+- Constraint-based filtering logic
+- Input validation and user feedback
+- Responsive layout design
 
 ---
 
 ## Features
 
-- Mobile-friendly interface
-- Tap-to-select word interaction
-- Constraint history tracking
-- Real-time candidate filtering
-- Input validation and error handling
+- Responsive terminal-style UI
+- Word list input via textarea
+- CTRL+ENTER or button submit for words
+- Tap/click selection of candidate words
+- Match count input with validation
+- Live filtered candidate list
+- Attempt history display
+- Error messaging for invalid input
 
 ---
 
@@ -77,7 +70,7 @@ Input words:
 CRANE  
 SLATE  
 PLANE  
-FLAME  
+PRESS  
 
 Step 1:
 
@@ -91,41 +84,42 @@ Step 2:
 
 Result:
 
-- Filtered list updates based on both constraints
+- The candidate list updates to only words satisfying both guesses
 
 ---
 
 ## Project Structure
 
 ```bash
-fallout-hacking-solver/  
-│  
-├── index.html  
-├── styles.css  
-├── app.js  
-├── solver.js  
-│  
-├── README.md  
-└── outline.md  
+TerminalHacker/
+├── index.html
+├── style.css
+├── app.js
+├── solver.js
+├── test.html
+├── test.js
+├── README.md
+├── outline.md
+└── VersionNotes.md
 ```
 
 ---
 
 ## Future Enhancements
 
-- Best guess suggestion (information gain strategy)
-- Import word lists from file
-- Local storage persistence
-- Fallout-style terminal theme
-- Progressive Web App (PWA)
+- Suggest the best next guess using information gain
+- Import/export word lists
+- Save progress with localStorage
+- Add more Fallout-inspired terminal styling
+- Convert to a PWA
 
 ---
 
 ## Portfolio Value
 
-This project demonstrates:
+This project shows how to:
 
-- Translating game mechanics into software systems
-- Designing constraint-solving algorithms
-- Managing application state without frameworks
-- Building responsive, user-friendly interfaces
+- turn a game puzzle into a working frontend app
+- implement constraint propagation in JavaScript
+- manage state without frameworks
+- build a responsive and accessible interface

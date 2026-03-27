@@ -1,26 +1,31 @@
 flowchart TD
     A[Start] --> B[User enters word list]
-    B --> C[Validate input]
+    B --> C[Normalize input: uppercase, split by whitespace/comma]
+    C --> D[Validate word list]
 
-    C -->|Invalid| D[Show error]
-    D --> B
+    D -->|Invalid| E[Show error message]
+    E --> B
 
-    C -->|Valid| E[Store original words]
-    E --> F[Initialize state]
-    F --> G[Display candidate words]
+    D -->|Valid| F[Store masterList and currentList]
+    F --> G[Show runtime UI and hide input section]
+    G --> H[Render candidate word buttons]
 
-    G --> H{More than one word remaining?}
+    H --> I[User selects a word button]
+    I --> J[Store selectedWord and update selected label]
 
-    H -->|No| I[Display solution]
-    I --> J[End]
+    J --> K[User enters match count and submits]
+    K --> L[Validate selection and match count]
 
-    H -->|Yes| K[User selects guess]
-    K --> L[User enters match count]
+    L -->|Invalid| M[Show error message]
+    M --> K
 
-    L --> M[Add to history]
-    M --> N[Recalculate using constraints]
+    L -->|Valid| N[Append attempt to history]
+    N --> O[Run solver with currentList and attempt history]
 
-    N --> O[Update filtered words]
-    O --> P[Render updated UI]
+    O --> P[Update currentList with filtered results]
+    O --> R[Catch solver error and show message]
 
-    P --> G
+    P --> Q[Render updated word list and history]
+    Q --> K
+
+    R --> K

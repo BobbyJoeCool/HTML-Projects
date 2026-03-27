@@ -29,17 +29,10 @@ function generateWords(count, length) {
 	return words;
 }
 
-/*
- * test.js
- * Test harness for Fallout Solver
- */
-
-/* =========================
-   TEST DATA GENERATION
-========================= */
-
 /**
- * Runs a valid test scenario
+ * Runs a normal test scenario using a valid word list and a starter guess.
+ *
+ * @returns {void}
  */
 function runValidTest() {
 	console.log("=== VALID TEST ===");
@@ -57,11 +50,11 @@ function runValidTest() {
         "ALIVE",
         "DEATH",
         "PRIDE"
-        ]
+        ];
 	console.log("Generated Words:", words);
 
 	const attempts = [{ guess: words[0], matches: 2 }];
-    console.log("Attempt:", attempts)
+    console.log("Attempt:", attempts);
 
 	try {
 		const result = listSolver(words, attempts);
@@ -71,6 +64,11 @@ function runValidTest() {
 	}
 }
 
+/**
+ * Verifies that a malformed word list throws validation errors.
+ *
+ * @returns {void}
+ */
 function testInvalidWordList() {
 	console.log("=== INVALID WORD LIST ===");
 
@@ -83,6 +81,11 @@ function testInvalidWordList() {
 	}
 }
 
+/**
+ * Verifies that an empty word list is rejected by the validator.
+ *
+ * @returns {void}
+ */
 function testEmptyList() {
 	console.log("=== EMPTY LIST ===");
 
@@ -93,6 +96,11 @@ function testEmptyList() {
 	}
 }
 
+/**
+ * Verifies that malformed attempt objects are rejected by the solver.
+ *
+ * @returns {void}
+ */
 function testInvalidAttempts() {
 	console.log("=== INVALID ATTEMPTS ===");
 
@@ -109,6 +117,11 @@ function testInvalidAttempts() {
 	}
 }
 
+/**
+ * Verifies that an impossible combination of attempts produces an error.
+ *
+ * @returns {void}
+ */
 function testImpossibleCase() {
 	console.log("=== IMPOSSIBLE CASE ===");
 
@@ -127,6 +140,11 @@ function testImpossibleCase() {
 	}
 }
 
+/**
+ * Runs all available test cases for the solver harness.
+ *
+ * @returns {void}
+ */
 function runAllTests() {
 	runValidTest();
 	testInvalidWordList();

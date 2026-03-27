@@ -7,12 +7,12 @@
  */
 
 /**
- * This function reveives a list of words and makes sure they are
- * a valid list of words for the terminal hacker program
+ * This function receives a list of words and validates that they are all
+ * the same length and properly formatted for the terminal hacker program.
  *
  * @param {string[]} words - A list of words entered by the user.
- *
- * @return {boolean} - True if the list is valid, otherwise an error if it isn't.
+ * @throws {Error} When the input is not a valid, same-length string array.
+ * @returns {boolean} - True if the list is valid.
  */
 function isListValid(words) {
 	if (!Array.isArray(words)) {
@@ -41,10 +41,10 @@ function isListValid(words) {
 /**
  * Checks the array of attempts to ensure that it is valid.
  * 
- * @param {{guess: string, matches: number }[]} attempts 
- * @param {int} wordLength - the length of the words in the array.
- * 
- * @return {boolean} - True if the list is valid, otherwise an error if it isn't.
+ * @param {{guess: string, matches: number }[]} attempts - Validation history for the solver.
+ * @param {number} wordLength - The expected length of each guess word.
+ * @throws {Error} When any attempt is malformed or violates length/match constraints.
+ * @returns {boolean} - True if the list is valid.
  */
 function isAttemptsValid(attempts, wordLength) {
 	if (!Array.isArray(attempts)) {
@@ -72,12 +72,12 @@ function isAttemptsValid(attempts, wordLength) {
 }
 
 /**
- * Contains the solver logic for the program.
- * 
- * @param {string[]} words - The remaining list of possible matches
- * @param {{guess: string, matches: number }[]} attempts - This is the guess history from the user
- * 
- * @returns {string[]} - The remaining list of possible matches or an error message.
+ * Applies the solver logic to return words that satisfy all provided attempts.
+ *
+ * @param {string[]} words - The remaining list of possible matches.
+ * @param {{guess: string, matches: number }[]} attempts - The guess history from the user.
+ * @throws {Error} When the input is invalid or the constraints eliminate all options.
+ * @returns {string[]} - The filtered list of valid matching words.
  */
 function listSolver(words, attempts) {
 	let newList = []

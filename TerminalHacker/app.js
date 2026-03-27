@@ -83,46 +83,68 @@ function selectWord(clickedButton) {
 
 UI.submitButton.addEventListener("click", submitMatchCount);
 /**
- * Submits the match count for the currently selected word,
- * calls the solver, updates attempts, and renders results
+ * Submits the match count for the currently selected word, validates input,
+ * updates the attempt history, and refreshes the candidate list.
  *
+ * @returns {void}
  */
 function submitMatchCount() {
     if (!appState.selectedWord) {
-        showError("No word selected.")
+        showError("No word selected.");
         return;
     }
 
-    const matchCount = UI.matchInput.value;
+    const rawValue = UI.matchInput.value.trim();
+    const matchCount = Number(rawValue);
+
+    if (rawValue === "") {
+        showError("Match Count cannot be empty.");
+        return;
+    } else if (!Number.isInteger(matchCount)) {
+        showError("Match Count must be a whole number.");
+        return;
+    }
 
     appState.attempts.push({
         guess: appState.selectedWord,
-        matches: Number(matchCount)
+        matches: matchCount,
     });
 
     try {
         appState.currentList = listSolver(appState.currentList, appState.attempts);
     } catch (e) {
-        showError(e)
+        showError(e.message);
+        return;
     }
 
-	renderWordList();
+    renderWordList();
     renderAttempts();
     UI.matchInput.value = "";
+    UI.selectedWord.textContent = "";
 }
 
+/**
+ * Builds the list of word candidate buttons and applies elimination styling.
+ *
+ * @returns {void}
+ */
 function renderWordList() {
     // Clear the list
-    const wordsArray = appState.currentList
+    const originalList = appState.masterList;
+    const currentList = appState.currentList;
 
     UI.activeWordList.textContent = "";
     
-    for (const word of wordsArray) {
+    for (const word of originalList) {
         // Create a button element for each word
         const wordBtn = document.createElement("button");
         wordBtn.textContent = word;
         wordBtn.classList.add("word-btn");
         wordBtn.classList.add("unselected");
+        if (!currentList.includes(word)) {
+            wordBtn.classList.add("eliminated");
+            wordBtn.disabled = true;
+        }
 
         // add a click listener for selecting this word
         wordBtn.addEventListener("click", () => {
@@ -162,6 +184,11 @@ function showError(message) {
     UI.systemMessage.classList.remove("message");
 }
 
+/**
+ * Clears any visible error message and restores the default informational styling.
+ *
+ * @returns {void}
+ */
 function clearError() {
 	UI.systemMessage.textContent = "";
     UI.systemMessage.classList.add("message");
@@ -169,7 +196,9 @@ function clearError() {
 }
 
 /**
- * Resets the app to initial state
+ * Resets the application state and UI back to the initial word entry screen.
+ *
+ * @returns {void}
  */
 function resetApp() {
     appState.masterList = [];
@@ -182,7 +211,7 @@ function resetApp() {
     UI.systemMessage.textContent = "Enter Password Candidates";
     UI.historyList.textContent = "";
     UI.activeWordList.textContent = "";
-    UI.matchInput = "";
+    UI.matchInput.value = "";
 }
 
 /** ===============
@@ -199,6 +228,11 @@ UI.wordInput.addEventListener("keydown", (e) => {
 	}
 });
 
+/**
+ * Reads the user's word list input, validates the format, and advances the app to solving mode.
+ *
+ * @returns {void}
+ */
 function wordListSubmitButton() {
 	clearError();
 	const inputText = UI.wordInput.value.trim();
