@@ -11,6 +11,7 @@
 	/* Accent / States */
 	--color-highlight: #66ff66;
 	--color-highlight-text: #001a00;
+	--color-message: #66ff66;
 	--color-error: #ff6666;
 
 	/* Input / Borders */
@@ -18,6 +19,7 @@
 	--color-border-soft: #999999;
 
 	/* Button Colors */
+    --color-selected: #bfff00;
 	--color-button-bg: #dcdcdc;
 	--color-button-shadow: #888888;
 	--color-button-shadow-dark: #000000;
@@ -34,6 +36,7 @@
 ========================= */
 * {
 	box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -52,7 +55,7 @@ body {
 ========================= */
 #terminal {
 	width: 90%;
-	max-width: 400px;
+	max-width: 500px;
 
 	margin: 30px auto;
 	padding: 20px;
@@ -71,10 +74,10 @@ body {
 
 @media (max-width: 768px) {
 	#terminal {
-		width: 95vw; /* almost full viewport width */
-		height: 90vh; /* almost full viewport height */
+		width: 100vw; /* almost full viewport width */
+		height: 100vh; /* almost full viewport height */
 		padding: 1rem;
-		margin: 1rem auto;
+		margin: 0;
 		border-radius: 0.5rem; /* slightly smaller radius */
 	}
 }
@@ -97,6 +100,11 @@ h1 {
 
 h2 {
 	margin-top: 10px;
+}
+
+label {
+	text-align: center;
+	font-size: 1.5rem;
 }
 
 /* =========================
@@ -123,6 +131,7 @@ input {
 	margin-top: 5px;
 
 	font-family: inherit;
+	text-transform: uppercase;
 }
 
 /* =========================
@@ -165,17 +174,69 @@ button:active {
 /* =========================
     WORD LIST
 ========================= */
-#word-list div {
-	padding: 6px;
-	margin: 3px 0;
+/* Word list container */
+#word-list {
+	background-color: var(--color-bg-screen);
+	color: var(--color-border-input);
+	font-family: "Courier New", Courier, monospace;
+	font-size: .95rem;
+	padding: 4px;
+	border: 4px solid var(--color-border-input);
+	border-radius: 4px;
+	height: 250px;
+	overflow-y: auto;
 
-	border: 1px solid transparent;
-	cursor: pointer;
+	display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+	gap: 0;
+
+    align-content: start;
+    justify-items: start;
 }
 
-#word-list div:hover {
-	background-color: var(--color-bg-main);
-	border-color: var(--color-text-primary);
+.word-btn {
+    font-family: inherit;
+	font-size: inherit;
+    padding: 1px 1px;
+    margin: 2px auto;
+    cursor: pointer;
+	text-align: center;
+    max-height: 22px;
+    box-shadow:
+		none;
+}
+
+.word-btn.unselected {
+	background: var(--color-bg-main); 
+	color: var(--color-text-primary);
+	border: 2px solid var(--color-border-soft);
+}
+
+/* Highlight the selected word */
+.word-btn.selected {
+	background-color: var(--color-selected);
+	color: var(--color-highlight-text);
+	border-radius: 2px;
+}
+
+/* Highlights the word in red when it is eliminated */
+.word-btn.eliminated {
+    background-color: var(--color-error)
+}
+
+/* Hover effect for feedback */
+.word-btn:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.word-btn:focus,
+.word-btn:active,
+.word-btn:focus-visible {
+    transform: none;
+    outline: none;
+    box-shadow: none;
+    background-color: inherit;
+    color: inherit;
 }
 
 /* =========================
@@ -189,17 +250,37 @@ button:active {
 /* =========================
     HISTORY & RESULTS
 ========================= */
-#history-list div,
-#results-list div {
+#history-list div {
 	padding: 4px 0;
+    margin: 0 auto;
 }
 
 /* =========================
     OUTPUT / ERROR
 ========================= */
+#output-section {
+	width: 100%;
+
+	background-color: var(--color-bg-main);
+	color: var(--color-text-primary);
+
+	border: 2px solid var(--color-border-input);
+	border-radius: 4px;
+
+	padding: 8px;
+	margin-top: 5px;
+}
+
 #output-message {
 	margin-top: 5px;
+}
+
+#output-message.error {
 	color: var(--color-error);
+}
+
+#output-message.message {
+	color: var(--color-message);
 }
 
 /* =========================

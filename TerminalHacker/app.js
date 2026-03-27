@@ -7,10 +7,27 @@
  * Global application state
  */
 const appState = {
-  masterList: [],     // Original word list entered by the user
-  currentList: [],    // Filtered list of possible passwords
-  attempts: [],       // Array of objects {guess: string, matches: number}
-  selectedWord: null, // Currently selected word from UI
+	masterList: [], // Original word list entered by the user
+	currentList: [], // Filtered list of possible passwords
+	attempts: [], // Array of objects {guess: string, matches: number}
+	selectedWord: null, // Currently selected word from UI
+};
+
+/** =======================
+ * Variables holding HTML elements for listeners
+ */
+const UI = {
+	systemMessage: document.getElementById("output-message"),
+	wordInput: document.getElementById("word-input"),
+	wordListButton: document.getElementById("load-btn"),
+	activeWordList: document.getElementById("word-list"),
+    selectedWord: document.getElementById("selected-word"),
+	matchInput: document.getElementById("match-input"),
+	submitButton: document.getElementById("submit-attempt"),
+	historyList: document.getElementById("history-list"),
+	resultsList: document.getElementById("results-list"),
+    setupClass: document.getElementById("input-section"),
+    runtimeClass: document.getElementById("runtime"),
 };
 
 /**
@@ -19,18 +36,17 @@ const appState = {
  * @param {string[]} wordsArray - Array of words entered by the user
  */
 function storeWords(wordsArray) {
-  // TODO: Validate wordsArray
-  // TODO: Copy to appState.masterList and appState.currentList
-  // TODO: Switch UI to solver mode
-  // TODO: Render word list
-}
+	isListValid(wordsArray);
 
-/**
- * Hides the word entry area and shows the solver area
- */
-function switchToSolvingMode() {
-  // TODO: Hide word entry section
-  // TODO: Show solver/selection section
+	appState.masterList = wordsArray;
+    appState.currentList = wordsArray;
+
+    UI.setupClass.classList.add("hidden");
+    UI.runtimeClass.classList.remove("hidden");
+
+	renderWordList();
+    clearError();
+    UI.systemMessage.textContent = "Select a word and number of matching characters."
 }
 
 /**
@@ -38,41 +54,101 @@ function switchToSolvingMode() {
  *
  * @param {string} word - Word selected by the user
  */
-function selectWord(word) {
-  // TODO: Store selection in appState.selectedWord
-  // TODO: Highlight selected word in UI
+function selectWord(clickedButton) {
+    appState.selectedWord = clickedButton.textContent;
+    const allButtons = document.querySelectorAll(".word-btn");
+
+    allButtons.forEach(btn => {
+        if (btn === clickedButton) {
+            // Highlight the clicked button
+            btn.classList.add("selected");
+            btn.classList.remove("unselected");
+        } else {
+            // Unhighlight other buttons
+            btn.classList.remove("selected");
+            if (!btn.classList.contains("eliminated")) {
+                btn.classList.add("unselected");
+            }
+        }
+    });
+
+    // Get the word from the button
+    const selectedWord = clickedButton.textContent;
+
+    // Store or use the selected word
+    appState.selectedWord = selectedWord;
+    UI.selectedWord.textContent = selectedWord;
 }
 
+
+UI.submitButton.addEventListener("click", submitMatchCount);
 /**
  * Submits the match count for the currently selected word,
  * calls the solver, updates attempts, and renders results
  *
- * @param {number} matchCount - Number of letters matching the correct position
  */
-function submitMatchCount(matchCount) {
-  // TODO: Check a word is selected
-  // TODO: Push attempt to appState.attempts
-  // TODO: Call listSolver with currentList and attempts
-  // TODO: Update appState.currentList
-  // TODO: Render word list and attempts
-  // TODO: Reset selectedWord
-  // TODO: Handle errors
+function submitMatchCount() {
+    if (!appState.selectedWord) {
+        showError("No word selected.")
+        return;
+    }
+
+    const matchCount = UI.matchInput.value;
+
+    appState.attempts.push({
+        guess: appState.selectedWord,
+        matches: Number(matchCount)
+    });
+
+    try {
+        appState.currentList = listSolver(appState.currentList, appState.attempts);
+    } catch (e) {
+        showError(e)
+    }
+
+	renderWordList();
+    renderAttempts();
+    UI.matchInput.value = "";
 }
 
-/**
- * Renders the current list of possible words in the UI
- */
 function renderWordList() {
-  // TODO: Iterate through appState.currentList
-  // TODO: Display each word as a clickable element
+    // Clear the list
+    const wordsArray = appState.currentList
+
+    UI.activeWordList.textContent = "";
+    
+    for (const word of wordsArray) {
+        // Create a button element for each word
+        const wordBtn = document.createElement("button");
+        wordBtn.textContent = word;
+        wordBtn.classList.add("word-btn");
+        wordBtn.classList.add("unselected");
+
+        // add a click listener for selecting this word
+        wordBtn.addEventListener("click", () => {
+            selectWord(wordBtn); // sends the button pressed
+        });
+
+        // Append the button to the word list
+        UI.activeWordList.appendChild(wordBtn);
+    }
 }
 
 /**
  * Renders the history of guesses and their match counts
  */
 function renderAttempts() {
-  // TODO: Iterate through appState.attempts
-  // TODO: Display each attempt in a readable format
+    let attemptString = "";
+
+	appState.attempts.forEach(attempt => {
+        attemptString += "> ";
+        attemptString += attempt.guess + " ";
+        attemptString += "-".repeat(30 - appState.masterList[0].length);
+        attemptString += " " + attempt.matches;
+        attemptString += "<br>";
+    });
+	
+    UI.historyList.innerHTML = attemptString;
 }
 
 /**
@@ -81,37 +157,66 @@ function renderAttempts() {
  * @param {string} message - Error message to display
  */
 function showError(message) {
-  // TODO: Update output area with message
+	UI.systemMessage.textContent = message;
+    UI.systemMessage.classList.add("error");
+    UI.systemMessage.classList.remove("message");
 }
 
-/**
- * Highlights the currently selected word in the UI
- *
- * @param {string} word - Word to highlight
- */
-function highlightSelectedWord(word) {
-  // TODO: Add/remove CSS class for visual feedback
+function clearError() {
+	UI.systemMessage.textContent = "";
+    UI.systemMessage.classList.add("message");
+    UI.systemMessage.classList.remove("error");
 }
 
 /**
  * Resets the app to initial state
  */
 function resetApp() {
-  // TODO: Clear appState
-  // TODO: Reset UI sections
-  // TODO: Show word entry area
+    appState.masterList = [];
+    appState.currentList = [];
+    appState.attempts = [];
+    appState.selectedWord = null;
+    UI.setupClass.classList.remove("hidden");
+    UI.runtimeClass.classList.add("hidden");
+    clearError();
+    UI.systemMessage.textContent = "Enter Password Candidates";
+    UI.historyList.textContent = "";
+    UI.activeWordList.textContent = "";
+    UI.matchInput = "";
 }
 
-/* =======================
-   Event Listeners
-======================= */
+/** ===============
+ *  Event Listeners
+ */
 
-// Word list submission button
-document.getElementById("submit-word-list").addEventListener("click", () => {
-  // TODO: Read word input value, split into array, call storeWords()
+// ===== Submit Word List =====
+
+UI.wordListButton.addEventListener("click", wordListSubmitButton);
+UI.wordInput.addEventListener("keydown", (e) => {
+	if (e.key === "Enter" && e.ctrlKey) {
+		e.preventDefault(); // stop newline
+		wordListSubmitButton();
+	}
 });
 
-// Match count submission button
-document.getElementById("submit-match").addEventListener("click", () => {
-  // TODO: Read match count input value, parseInt, call submitMatchCount()
-});
+function wordListSubmitButton() {
+	clearError();
+	const inputText = UI.wordInput.value.trim();
+	if (!inputText) {
+		showError("Please enter a list of words.");
+		return;
+	}
+
+	// Split input into array by newlines, spaces, or commas
+	const wordsArray = inputText
+		.toUpperCase()
+		.split(/[\s,]+/)
+		.map((w) => w.trim())
+		.filter((w) => w.length > 0);
+
+	try {
+		storeWords(wordsArray);
+	} catch (e) {
+		showError(e.message);
+	}
+}

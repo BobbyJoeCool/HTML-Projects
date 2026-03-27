@@ -42,10 +42,11 @@ function isListValid(words) {
  * Checks the array of attempts to ensure that it is valid.
  * 
  * @param {{guess: string, matches: number }[]} attempts 
+ * @param {int} wordLength - the length of the words in the array.
  * 
  * @return {boolean} - True if the list is valid, otherwise an error if it isn't.
  */
-function isAttemptsValid(attempts) {
+function isAttemptsValid(attempts, wordLength) {
 	if (!Array.isArray(attempts)) {
 		throw new Error("Attempts must be an array")
 	}
@@ -82,7 +83,7 @@ function listSolver(words, attempts) {
 	let newList = []
 	
 	isListValid(words)
-	isAttemptsValid(attempts)
+	isAttemptsValid(attempts, words[0].length)
 
 	for (const word of words) {
 		let isValid = true

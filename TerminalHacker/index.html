@@ -16,48 +16,43 @@
 			<!-- 2. OUTPUT / ERROR -->
 			<section id="output-section">
 				<h2>> SYSTEM MESSAGE</h2>
-				<div id="output-message">Enter Password Candidates</div>
+				<div id="output-message" class="message">Enter Password Candidates</div>
 			</section>
 
 			<!-- 3. INPUT AREA -->
-			<section id="input-section">
+            <section id="input-section">
 				<label for="word-input">WORD LIST</label>
 				<textarea
 					id="word-input"
-					placeholder="CRANE&#10;SLATE&#10;PLANE"
+					placeholder="CRANE&#10;SLATE&#10;PLANE&#10;PRESS CNTR+ENTER TO SUBMIT"
 					rows="14"
 				></textarea>
 				<button id="load-btn">LOAD WORDS</button>
 			</section>
 
-			<!-- 4. WORD LIST -->
-			<section id="word-section" class="hidden">
-				<h2>> AVAILABLE WORDS</h2>
-				<div id="word-list"></div>
-				xw
-			</section>
+            <section id="runtime" class="hidden">
+                <!-- 4. WORD LIST -->
+                <section id="word-section">
+                    <h2>> AVAILABLE WORDS</h2>
+                    <div id="word-list"></div>
+                </section>
 
-			<!-- 5. SELECTION + MATCH INPUT -->
-			<section id="selection-section" class="hidden">
-				<p>> SELECTED WORD: <span id="selected-word">NONE</span></p>
+                <!-- 5. SELECTION + MATCH INPUT -->
+                <section id="selection-section">
+                    <p>> SELECTED WORD: <span id="selected-word">NONE</span></p>
 
-				<label for="match-input">MATCH COUNT</label>
-				<input type="number" id="match-input" min="0" />
+                    <label for="match-input">MATCH COUNT</label>
+                    <input type="number" id="match-input" min="0" />
 
-				<button id="submit-attempt">SUBMIT ATTEMPT</button>
-			</section>
+                    <button id="submit-attempt">SUBMIT ATTEMPT</button>
+                </section>
 
-			<!-- 6. HISTORY -->
-			<section id="history-section" class="hidden">
-				<h2>> ATTEMPTS</h2>
-				<div id="history-list"></div>
-			</section>
-
-			<!-- 7. RESULTS -->
-			<section id="results-section" class="hidden">
-				<h2>> POSSIBLE PASSWORDS</h2>
-				<div id="results-list"></div>
-			</section>
+                <!-- 6. HISTORY -->
+                <section id="history-section">
+                    <h2>> ATTEMPTS</h2>
+                    <div id="history-list"></div>
+                </section>
+            </section>
 		</main>
 		<script src="solver.js"></script>
 		<script src="app.js"></script>
