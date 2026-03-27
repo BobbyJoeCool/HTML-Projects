@@ -1,3 +1,10 @@
+/*
+ * Terminal Hacker CSS
+ * -------------------
+ * Defines the retro terminal layout, color palette, and interactive
+ * styling used by the Terminal Hacker app.
+ */
+
 /* =========================
     ROOT VARIABLES (THEME)
 ========================= */
@@ -221,7 +228,7 @@ button:active {
 
 /* Highlights the word in red when it is eliminated */
 .word-btn.eliminated {
-    background-color: var(--color-error)
+    background-color: var(--color-error);
 }
 
 /* Hover effect for feedback */
@@ -242,6 +249,7 @@ button:active {
 /* =========================
     SELECTED WORD
 ========================= */
+/* Highlight the currently selected password candidate in the word list. */
 .selected {
 	background-color: var(--color-highlight);
 	color: var(--color-highlight-text);
